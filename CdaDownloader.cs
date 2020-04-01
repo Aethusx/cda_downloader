@@ -32,7 +32,6 @@ static class CdaDownloader
 
     public static string GetVideoLink(string link, string quality = null, bool https = false)
     {
-
         if (link.EndsWith("/vfilm"))
             link = link.Substring(0, link.Length - 5);
 
