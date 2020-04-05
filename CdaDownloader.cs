@@ -23,9 +23,17 @@ static class CdaDownloader
     public static string DecryptKey(string key, bool https = false)
     {
         string result = String.Empty;
+        key = Uri.UnescapeDataString(key);
+
+        /* spytaj sie cda o co im chodzi nie mnie */
+        key = key.Replace("_XDDD", "");
 
         foreach (char c in key)
             result += (c >= 33 && c <= 126) ? (char)(33 + ((c + 14) % 94)) : c;
+
+        result = result.Replace(".cda.mp4", "");
+        result = result.Replace(".2cda.pl", ".cda.pl");
+        result = result.Replace(".3cda.pl", ".cda.pl");
 
         return (https) ? "https://" : "http://" + result + ".mp4";
     }
@@ -54,7 +62,7 @@ static class CdaDownloader
         Match match = regex_file.Match(task.Result);
 
         if (match.Success && match.Groups.Count >= 2)
-            return DecryptKey(Uri.UnescapeDataString(match.Groups[1].Value), https);
+            return DecryptKey(match.Groups[1].Value, https);
 
         return null;
     }
