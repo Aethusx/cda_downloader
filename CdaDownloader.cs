@@ -30,7 +30,7 @@ static class CdaDownloader
         key = key.Replace("_CDA", "");
         key = key.Replace("_ADC", "");
         key = key.Replace("_CXD", "");
-		key = key.Replace("_QWE", "");
+        key = key.Replace("_QWE", "");
         key = key.Replace("_Q5", "");
 		
         foreach (char c in key)
