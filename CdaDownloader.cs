@@ -12,6 +12,9 @@ static class CdaDownloader
     static Regex regex_file = new Regex(@"""file"":""(.*?)(?:"")");
     static readonly string[] available_quality = { "360p", "480p", "720p", "1080p" };
 
+    /* spytaj sie cda o co im chodzi nie mnie */
+    static readonly string[] remove_keys = { "_XDDD", "_CDA", "_ADC", "_CXD", "_QWE", "_Q5"};
+
     static CdaDownloader()
     {
         web.DefaultRequestHeaders.Add("Referer", "https://www.cda.pl");
@@ -25,14 +28,9 @@ static class CdaDownloader
         string result = String.Empty;
         key = Uri.UnescapeDataString(key);
 
-        /* spytaj sie cda o co im chodzi nie mnie */
-        key = key.Replace("_XDDD", "");
-        key = key.Replace("_CDA", "");
-        key = key.Replace("_ADC", "");
-        key = key.Replace("_CXD", "");
-        key = key.Replace("_QWE", "");
-        key = key.Replace("_Q5", "");
-		
+        foreach (string vkey in remove_keys)
+            key = key.Replace(vkey, "");
+
         foreach (char c in key)
             result += (c >= 33 && c <= 126) ? (char)(33 + ((c + 14) % 94)) : c;
 
