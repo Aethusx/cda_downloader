@@ -30,6 +30,8 @@ static class CdaDownloader
         key = key.Replace("_CDA", "");
         key = key.Replace("_ADC", "");
         key = key.Replace("_CXD", "");
+		key = key.Replace("_QWE", "");
+        key = key.Replace("_Q5", "");
 		
         foreach (char c in key)
             result += (c >= 33 && c <= 126) ? (char)(33 + ((c + 14) % 94)) : c;
