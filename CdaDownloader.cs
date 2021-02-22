@@ -13,7 +13,7 @@ static class CdaDownloader
     static readonly string[] available_quality = { "360p", "480p", "720p", "1080p" };
 
     /* spytaj sie cda o co im chodzi nie mnie */
-    static readonly string[] remove_keys = { "_XDDD", "_CDA", "_ADC", "_CXD", "_QWE", "_Q5"};
+    static readonly string[] remove_keys = { "_XDDD", "_CDA", "_ADC", "_CXD", "_QWE", "_Q5", "_IKSDE"};
 
     static CdaDownloader()
     {
