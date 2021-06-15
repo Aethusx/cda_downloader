@@ -1,19 +1,26 @@
-﻿using System;
+using System;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+
+public enum CdaQuality
+{
+    auto = 0,
+    p360 = 360,
+    p480 = 480,
+    p720 = 720,
+    p1080 = 1080
+}
 
 static class CdaDownloader
 {
     static HttpClient web = new HttpClient();
     static Regex regex_link = new Regex(@"https:\/\/www.cda.pl\/video\/([^\/\s]+)");
     static Regex regex_file = new Regex(@"""file"":""(.*?)(?:"")");
-    static readonly string[] available_quality = { "360p", "480p", "720p", "1080p" };
 
     /* spytaj sie cda o co im chodzi nie mnie */
-    static readonly string[] remove_keys = { "_XDDD", "_CDA", "_ADC", "_CXD", "_QWE", "_Q5", "_IKSDE"};
+    static readonly string[] remove_keys = { "_XDDD", "_CDA", "_ADC", "_CXD", "_QWE", "_Q5", "_IKSDE" };
 
     static CdaDownloader()
     {
@@ -41,7 +48,7 @@ static class CdaDownloader
         return (https) ? "https://" : "http://" + result + ".mp4";
     }
 
-    public static string GetVideoLink(string link, string quality = null, bool https = false)
+    public static string GetVideoLink(string link, CdaQuality quality = CdaQuality.auto, bool https = false)
     {
         if (link.EndsWith("/vfilm"))
             link = link.Substring(0, link.Length - 5);
@@ -55,8 +62,8 @@ static class CdaDownloader
         if (!regex_link.Match(link).Success)
             return null;
 
-        if (available_quality.Contains(quality))
-            link = link + "?wersja=" + quality;
+        if (quality != CdaQuality.auto)
+            link = link + "?wersja=" + (int)quality + "p";
 
         /* mozna wyciagac to łopatologicznie ze z html tagów potem json objekt ale regex jest szybszy i krótszy :P :D */
         var task = Task.Run(() => web.GetAsync(link).Result.Content.ReadAsStringAsync());
